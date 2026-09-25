@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="The NBHD Tour Edition NFC collectible album experience">
+  <title>THE NBHD // TOUR EDITION</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;600;800;900&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
+
+    :root {
+      --ink:#f5f5f5; --muted:#a3a3a3; --accent:#d9d9d9; --glow:rgba(255,255,255,.18);
+      --bg:#060606; --panel:rgba(12,12,12,.72); --line:rgba(255,255,255,.17);
+      --cover:url('https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d');
+      --serif:'Playfair Display',serif; --sans:Inter,Arial,sans-serif; --mono:'DM Mono',monospace;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--sans);background:var(--bg);overflow-x:hidden;transition:background .8s ease,color .5s ease}
+    body::before{content:"";position:fixed;inset:-20%;z-index:-4;background:linear-gradient(130deg,var(--bg),#020202 46%,var(--accent));filter:blur(90px);opacity:.28;animation:ambient 14s ease-in-out infinite alternate}
+    .cover-bg{position:fixed;inset:-28px;z-index:-5;background-image:linear-gradient(180deg,rgba(0,0,0,.25),var(--bg) 79%),var(--cover);background-size:cover;background-position:center;filter:blur(26px) saturate(.7);opacity:.34;transform:scale(1.12);transition:background-image .7s ease}
+    .grain{position:fixed;inset:0;z-index:9;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");animation:noise .18s steps(2) infinite}
+    .scanlines{position:fixed;inset:0;z-index:8;pointer-events:none;opacity:.06;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.12) 4px)}
+    .shell{width:min(100%,760px);margin:auto;min-height:100vh;padding:18px 18px 64px;position:relative}
+    header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:10px 1px 15px;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+    .status{display:flex;align-items:center;gap:8px}.led{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);animation:pulse 1.8s ease-in-out infinite}
+    .hero{min-height:75vh;display:grid;align-content:center;position:relative;padding:42px 0 30px}
+    .eyebrow{display:flex;align-items:center;gap:12px;font:500 10px var(--mono);letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
+    .eyebrow::before{content:"";width:46px;height:1px;background:var(--accent)}
+    .title{margin:17px 0 3px;font-size:clamp(61px,18vw,132px);line-height:.79;letter-spacing:-.085em;font-weight:900;text-transform:uppercase;filter:drop-shadow(0 0 25px var(--glow));animation:reveal .8s both}
+    .title span{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.04em}
+    .meta-line{display:flex;justify-content:space-between;gap:12px;margin-top:20px;font:400 10px var(--mono);text-transform:uppercase;letter-spacing:.17em;border-top:1px solid var(--line);padding-top:12px}
+    .rarity{color:var(--accent);text-shadow:0 0 17px var(--accent)}
+    .editorial{margin:16px 0 30px;color:var(--muted);font:300 clamp(14px,4vw,17px)/1.7 var(--sans);max-width:540px}
+    .card-stage{position:relative;margin:0 auto 42px;width:min(88vw,420px);perspective:1100px}
+    .card-stage::before{content:"";position:absolute;inset:11% -12% -8%;background:var(--accent);filter:blur(55px);opacity:.22;border-radius:50%;animation:halo 4.8s ease-in-out infinite}
+    .album-card{position:relative;aspect-ratio:4/5;padding:14px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(0,0,0,.75));box-shadow:0 30px 80px rgba(0,0,0,.55);transform:rotateX(1deg) rotateY(-2deg);transition:transform .25s ease}
+    .album-card::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(255,255,255,.22) 44%,transparent 59%);transform:translateX(-130%);animation:sweep 5.2s ease-in-out infinite;pointer-events:none}
+    .cover{height:72%;background-image:var(--cover);background-size:cover;background-position:center;filter:grayscale(.18) contrast(1.06);border:1px solid rgba(255,255,255,.14)}
+    .card-label{height:28%;display:grid;grid-template-columns:1fr auto;align-content:center;gap:8px;padding:14px 5px 0}
+    .card-label strong{font-size:clamp(21px,7vw,34px);line-height:.9;text-transform:uppercase;letter-spacing:-.055em}.card-label small{font:400 9px var(--mono);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.card-no{writing-mode:vertical-rl;font:400 9px var(--mono);letter-spacing:.17em;color:var(--muted)}
+    .section{border-top:1px solid var(--line);padding:34px 0}.section-tag{font:500 9px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+    .section h2{margin:8px 0 20px;font-size:clamp(32px,9vw,57px);line-height:.92;letter-spacing:-.055em;text-transform:uppercase}
+    .tracks{list-style:none;padding:0;margin:0}.tracks li{display:grid;grid-template-columns:35px 1fr auto;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);font-size:14px}.tracks .n{font:400 9px var(--mono);color:var(--muted)}.tracks .mark{font:400 9px var(--mono);color:var(--accent)}
+    .spotify{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 20px;margin-top:27px;color:var(--bg);background:var(--ink);text-decoration:none;text-transform:uppercase;font:700 12px var(--sans);letter-spacing:.12em;transition:.25s}.spotify:hover,.spotify:focus-visible{background:var(--accent);transform:translateY(-2px);box-shadow:0 14px 45px var(--glow)}
+    .houses{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:22px}.house-btn{min-width:0;border:1px solid var(--line);color:var(--muted);background:rgba(0,0,0,.22);padding:13px 3px;font:400 clamp(7px,2.2vw,9px) var(--mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.25s}.house-btn:hover,.house-btn.active{color:var(--ink);border-color:var(--accent);box-shadow:inset 0 -3px var(--accent),0 0 26px var(--glow)}
+    footer{display:flex;justify-content:space-between;gap:20px;padding-top:25px;color:var(--muted);font:400 8px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+    body.love{--bg:#e7e7e3;--ink:#111;--muted:#555;--panel:rgba(255,255,255,.55);--line:rgba(0,0,0,.21);--accent:#8c8c8c;--glow:rgba(255,255,255,.75)}
+    body.void{--bg:#03070b;--ink:#f2f2ef;--muted:#8895a1;--accent:#79a6c8;--glow:rgba(69,141,189,.35)}
+    body.oblivion{--bg:#080808;--ink:#e7e7e7;--muted:#858585;--accent:#bdbdbd;--glow:rgba(255,255,255,.22)}
+    body.chrome{--bg:#090b0e;--ink:#fff;--muted:#9ca3ad;--accent:#d8e4ee;--glow:rgba(196,223,242,.42)}
+    body.signal{--bg:#09060f;--ink:#f8f5ff;--muted:#ad98c4;--accent:#b771ff;--glow:rgba(165,78,255,.45)}
+    body.oblivion .shell{animation:flicker 6s linear infinite}body.signal .title{text-shadow:-2px 0 #34d6ff,2px 0 #ff48c4}body.love .scanlines{display:none}
+    @keyframes ambient{to{transform:translate3d(5%,3%,0) scale(1.1)}}@keyframes noise{0%{transform:translate(0)}25%{transform:translate(-2%,2%)}50%{transform:translate(2%,-1%)}75%{transform:translate(1%,2%)}}
+    @keyframes pulse{50%{opacity:.35;transform:scale(.75)}}@keyframes reveal{from{opacity:0;transform:translateY(26px);filter:blur(12px)}to{opacity:1;transform:none}}
+    @keyframes halo{50%{transform:scale(1.09);opacity:.32}}@keyframes sweep{0%,55%{transform:translateX(-130%)}80%,100%{transform:translateX(130%)}}@keyframes flicker{0%,93%,96%,100%{opacity:1}94%{opacity:.96}95%{opacity:.88}}
+    @media(min-width:700px){.shell{padding-left:38px;padding-right:38px}.hero{min-height:68vh}.card-stage{width:430px}.tracks li{font-size:16px}}
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body class="void">
+  <div class="cover-bg" aria-hidden="true"></div><div class="grain"></div><div class="scanlines"></div>
+  <main class="shell">
+    <header><span>THE NBHD // TOUR EDITION</span><span class="status"><i class="led"></i><span>NFC SIGNAL ACTIVE</span></span></header>
+    <section class="hero">
+      <div class="eyebrow" id="era">ERA 02 // 2015</div>
+      <h1 class="title"><span id="house">VOID</span><br>HOUSE</h1>
+      <div class="meta-line"><span id="rarity" class="rarity">LEGENDARY</span><span id="edition">05 / 20</span></div>
+      <p class="editorial" id="description"></p>
+    </section>
+    <section class="card-stage" aria-label="Album collectible">
+      <article class="album-card" id="tiltCard">
+        <div class="cover" role="img" aria-label="Portada del álbum"></div>
+        <div class="card-label"><div><strong id="album"></strong><br><small id="artist">THE NEIGHBOURHOOD</small></div><span class="card-no" id="cardNo">NBHD-02</span></div>
+      </article>
+    </section>
+    <section class="section"><span class="section-tag">// LIVE ROTATION</span><h2>Setlist<br>highlights</h2><ol class="tracks" id="tracks"></ol><a class="spotify" id="spotify" target="_blank" rel="noopener noreferrer"><span>Open album on Spotify</span><span>↗</span></a></section>
+    <section class="section"><span class="section-tag">// ARCHIVE INDEX</span><h2>Collect the<br>five houses</h2><div class="houses" id="houses"></div></section>
+    <footer><span>Unofficial fan-made collectible<br>Not affiliated with the artist or Spotify</span><span id="footerCode">NBHD/NFC/02</span></footer>
+  </main>
+  <script>
+    const data = {
+      love:{house:'LOVE',album:'I LOVE YOU.',year:'2013',rarity:'LEGENDARY',edition:'05 / 20',code:'01',cover:'https://i.scdn.co/image/ab67616d0000b2738265a736a1eb838ad5a0b921',spotify:'https://open.spotify.com/album/5Wa03W4vfkVvMETp0QOKcZ',description:'Monochrome devotion, suburban clouds and the record that made longing feel cinematic.',tracks:['A Little Death','Afraid','Sweater Weather']},
+      void:{house:'VOID',album:'WIPED OUT!',year:'2015',rarity:'LEGENDARY',edition:'05 / 20',code:'02',cover:'https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d',spotify:'https://open.spotify.com/album/4uNgt1uQs6wZRm4giB3shX',description:'California after dark. Salt air, black palms, heartbreak and the slow pull of the ocean.',tracks:['Prey','Cry Baby','R.I.P. 2 My Youth','Baby Came Home 2 / Valentines','The Beach','Daddy Issues']},
+      oblivion:{house:'OBLIVION',album:'HARD TO IMAGINE THE NEIGHBOURHOOD EVER CHANGING',year:'2018',rarity:'EPIC',edition:'04 / 20',code:'03',cover:'https://m.media-amazon.com/images/I/81F27c5DIXL.jpg',spotify:'https://open.spotify.com/album/18iFxjZugvKhuNNMbLjZJF',description:'Reflections on glass, television static and a familiar voice dissolving into something new.',tracks:['Reflections','Void','You Get Me So High','Nervous','Softcore']},
+      chrome:{house:'CHROME',album:'CHIP CHROME & THE MONO-TONES',year:'2020',rarity:'RARE',edition:'03 / 20',code:'04',cover:'https://i.scdn.co/image/ab67616d00001e025aa30ba7fff59083baccc773',spotify:'https://open.spotify.com/album/0ODLCdHBFVvKwJGeSfd1jy',description:'A silver alter ego transmitted from a retrofuture where vulnerability wears chrome.',tracks:["Devil's Advocate",'Pretty Boy','Cherry Flavoured']},
+      signal:{house:'SIGNAL',album:'(((((ULTRASOUND)))))',year:'2025',rarity:'COMMON',edition:'03 / 20',code:'05',cover:'https://i.scdn.co/image/ab67616d0000b2739ea16fcc48f914ea0225b5bf',spotify:'https://open.spotify.com/album/4xkM0BwLM9H2IUcbYzpcBI',description:'The current transmission. New frequencies, distorted color and the pulse of the live era.',tracks:['Hula Girl','Zombie','Lovebomb','Planet','Private']}
+    };
+    const order=['love','void','oblivion','chrome','signal'];
+    function render(key){
+      if(!data[key]) key='void'; const d=data[key];
+      document.body.className=key; document.documentElement.style.setProperty('--cover',`url("${d.cover}")`);
+      document.title=`${d.house} HOUSE // THE NBHD`;
+      house.textContent=d.house; album.textContent=d.album; rarity.textContent=d.rarity; edition.textContent=d.edition;
+      era.textContent=`ERA ${d.code} // ${d.year}`; description.textContent=d.description; cardNo.textContent=`NBHD-${d.code}`;
+      spotify.href=d.spotify; footerCode.textContent=`NBHD/NFC/${d.code}`;
+      tracks.innerHTML=d.tracks.map((t,i)=>`<li><span class="n">${String(i+1).padStart(2,'0')}</span><span>${t}</span><span class="mark">LIVE</span></li>`).join('');
+      houses.innerHTML=order.map(k=>`<button class="house-btn ${k===key?'active':''}" data-house="${k}">${data[k].house}</button>`).join('');
+      houses.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=b.dataset.house;history.replaceState(null,'',`?house=${k}`);render(k);scrollTo({top:0,behavior:'smooth'})});
+    }
+    const selected=new URLSearchParams(location.search).get('house')||'void'; render(selected.toLowerCase());
+    const card=document.getElementById('tiltCard');
+    card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`rotateX(${-y*8}deg) rotateY(${x*10}deg)`});
+    card.addEventListener('pointerleave',()=>card.style.transform='rotateX(1deg) rotateY(-2deg)');
+  </script>
+</body>
+</html>
