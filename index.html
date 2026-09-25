@@ -6,102 +6,199 @@
   <meta name="theme-color" content="#050505">
   <meta name="description" content="The NBHD Tour Edition NFC collectible album experience">
   <title>THE NBHD // TOUR EDITION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;600;800;900&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;600;800;900&family=Playfair+Display:ital,wght@0,600;1,600&display=swap');
-
-    :root {
-      --ink:#f5f5f5; --muted:#a3a3a3; --accent:#d9d9d9; --glow:rgba(255,255,255,.18);
-      --bg:#060606; --panel:rgba(12,12,12,.72); --line:rgba(255,255,255,.17);
+    :root{
+      --ink:#f5f5f5;--muted:#a3a3a3;--accent:#d9d9d9;--accent2:#fff;
+      --glow:rgba(255,255,255,.18);--bg:#060606;--line:rgba(255,255,255,.17);
       --cover:url('https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d');
-      --serif:'Playfair Display',serif; --sans:Inter,Arial,sans-serif; --mono:'DM Mono',monospace;
+      --serif:'Playfair Display',serif;--sans:Inter,Arial,sans-serif;--mono:'DM Mono',monospace;
     }
     *{box-sizing:border-box}
     html{scroll-behavior:smooth;background:var(--bg)}
-    body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--sans);background:var(--bg);overflow-x:hidden;transition:background .8s ease,color .5s ease}
-    body::before{content:"";position:fixed;inset:-20%;z-index:-4;background:linear-gradient(130deg,var(--bg),#020202 46%,var(--accent));filter:blur(90px);opacity:.28;animation:ambient 14s ease-in-out infinite alternate}
-    .cover-bg{position:fixed;inset:-28px;z-index:-5;background-image:linear-gradient(180deg,rgba(0,0,0,.25),var(--bg) 79%),var(--cover);background-size:cover;background-position:center;filter:blur(26px) saturate(.7);opacity:.34;transform:scale(1.12);transition:background-image .7s ease}
-    .grain{position:fixed;inset:0;z-index:9;pointer-events:none;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");animation:noise .18s steps(2) infinite}
-    .scanlines{position:fixed;inset:0;z-index:8;pointer-events:none;opacity:.06;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.12) 4px)}
+    body{margin:0;min-height:100vh;color:var(--ink);font-family:var(--sans);background:var(--bg);overflow-x:hidden;transition:background .8s,color .5s}
+    button,a{-webkit-tap-highlight-color:transparent}
+    .cover-bg{position:fixed;inset:-40px;z-index:-6;background-image:linear-gradient(180deg,rgba(0,0,0,.12),var(--bg) 80%),var(--cover);background-size:cover;background-position:center;filter:blur(28px) saturate(.72);opacity:.38;transform:scale(1.15);transition:background-image .7s}
+    .ambient{position:fixed;inset:-25%;z-index:-5;background:radial-gradient(circle at 25% 30%,var(--accent),transparent 28%),radial-gradient(circle at 78% 68%,var(--accent2),transparent 22%);filter:blur(100px);opacity:.16;animation:ambient 15s ease-in-out infinite alternate;pointer-events:none}
+    .grain{position:fixed;inset:0;z-index:10;pointer-events:none;opacity:.075;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");animation:noise .18s steps(2) infinite}
+    .scanlines{position:fixed;inset:0;z-index:9;pointer-events:none;opacity:.055;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.13) 4px)}
+    .signature{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+    .signature span{position:absolute;display:block;opacity:.18}
     .shell{width:min(100%,760px);margin:auto;min-height:100vh;padding:18px 18px 64px;position:relative}
-    header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:10px 1px 15px;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+    header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:10px 1px 15px;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;position:relative;z-index:2}
     .status{display:flex;align-items:center;gap:8px}.led{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);animation:pulse 1.8s ease-in-out infinite}
-    .hero{min-height:75vh;display:grid;align-content:center;position:relative;padding:42px 0 30px}
+    .hero{min-height:76vh;display:grid;align-content:center;position:relative;padding:54px 0 34px}
     .eyebrow{display:flex;align-items:center;gap:12px;font:500 10px var(--mono);letter-spacing:.25em;text-transform:uppercase;color:var(--muted)}
     .eyebrow::before{content:"";width:46px;height:1px;background:var(--accent)}
-    .title{margin:17px 0 3px;font-size:clamp(61px,18vw,132px);line-height:.79;letter-spacing:-.085em;font-weight:900;text-transform:uppercase;filter:drop-shadow(0 0 25px var(--glow));animation:reveal .8s both}
-    .title span{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.04em}
+    .title{margin:18px 0 8px;font-size:clamp(49px,15vw,112px);line-height:.82;letter-spacing:-.08em;font-weight:900;text-transform:uppercase;overflow-wrap:anywhere;filter:drop-shadow(0 0 25px var(--glow));animation:reveal .8s both}
+    .title .display-word{font-family:var(--serif);font-style:italic;font-weight:600;letter-spacing:-.045em}
+    .title .subword{display:block;margin-top:14px;font:500 10px var(--mono);letter-spacing:.28em;color:var(--muted)}
     .meta-line{display:flex;justify-content:space-between;gap:12px;margin-top:20px;font:400 10px var(--mono);text-transform:uppercase;letter-spacing:.17em;border-top:1px solid var(--line);padding-top:12px}
     .rarity{color:var(--accent);text-shadow:0 0 17px var(--accent)}
-    .editorial{margin:16px 0 30px;color:var(--muted);font:300 clamp(14px,4vw,17px)/1.7 var(--sans);max-width:540px}
-    .card-stage{position:relative;margin:0 auto 42px;width:min(88vw,420px);perspective:1100px}
+    .editorial{margin:18px 0 30px;color:var(--muted);font:300 clamp(14px,4vw,17px)/1.72 var(--sans);max-width:560px}
+    .motif{height:48px;display:flex;align-items:center;gap:9px;color:var(--accent);font:400 9px var(--mono);letter-spacing:.15em;text-transform:uppercase;opacity:.86}
+    .motif::before,.motif::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+    .card-stage{position:relative;margin:0 auto 48px;width:min(88vw,420px);perspective:1100px}
     .card-stage::before{content:"";position:absolute;inset:11% -12% -8%;background:var(--accent);filter:blur(55px);opacity:.22;border-radius:50%;animation:halo 4.8s ease-in-out infinite}
-    .album-card{position:relative;aspect-ratio:4/5;padding:14px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(0,0,0,.75));box-shadow:0 30px 80px rgba(0,0,0,.55);transform:rotateX(1deg) rotateY(-2deg);transition:transform .25s ease}
-    .album-card::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(255,255,255,.22) 44%,transparent 59%);transform:translateX(-130%);animation:sweep 5.2s ease-in-out infinite;pointer-events:none}
-    .cover{height:72%;background-image:var(--cover);background-size:cover;background-position:center;filter:grayscale(.18) contrast(1.06);border:1px solid rgba(255,255,255,.14)}
+    .album-card{position:relative;aspect-ratio:4/5;padding:14px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(0,0,0,.76));box-shadow:0 30px 80px rgba(0,0,0,.55);transform:rotateX(1deg) rotateY(-2deg);transition:transform .25s;overflow:hidden}
+    .album-card::before{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.08);margin:7px;pointer-events:none}
+    .album-card::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 28%,rgba(255,255,255,.24) 44%,transparent 59%);transform:translateX(-130%);animation:sweep 5.2s ease-in-out infinite;pointer-events:none}
+    .cover{height:72%;background-image:var(--cover);background-size:cover;background-position:center;filter:grayscale(.15) contrast(1.06);border:1px solid rgba(255,255,255,.14);transition:filter .5s}
     .card-label{height:28%;display:grid;grid-template-columns:1fr auto;align-content:center;gap:8px;padding:14px 5px 0}
-    .card-label strong{font-size:clamp(21px,7vw,34px);line-height:.9;text-transform:uppercase;letter-spacing:-.055em}.card-label small{font:400 9px var(--mono);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.card-no{writing-mode:vertical-rl;font:400 9px var(--mono);letter-spacing:.17em;color:var(--muted)}
-    .section{border-top:1px solid var(--line);padding:34px 0}.section-tag{font:500 9px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+    .card-label strong{display:block;font-size:clamp(19px,6.3vw,32px);line-height:.92;text-transform:uppercase;letter-spacing:-.055em;overflow-wrap:anywhere}.card-label small{font:400 9px var(--mono);letter-spacing:.12em;color:var(--muted);text-transform:uppercase}.card-no{writing-mode:vertical-rl;font:400 9px var(--mono);letter-spacing:.17em;color:var(--muted)}
+    .section{border-top:1px solid var(--line);padding:36px 0}.section-tag{font:500 9px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
     .section h2{margin:8px 0 20px;font-size:clamp(32px,9vw,57px);line-height:.92;letter-spacing:-.055em;text-transform:uppercase}
+    .album-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:22px 0}.fact{border:1px solid var(--line);padding:14px 10px;min-height:76px;background:rgba(0,0,0,.08)}.fact b{display:block;font:500 9px var(--mono);letter-spacing:.16em;color:var(--accent);text-transform:uppercase;margin-bottom:9px}.fact span{font-size:12px;color:var(--muted)}
     .tracks{list-style:none;padding:0;margin:0}.tracks li{display:grid;grid-template-columns:35px 1fr auto;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);font-size:14px}.tracks .n{font:400 9px var(--mono);color:var(--muted)}.tracks .mark{font:400 9px var(--mono);color:var(--accent)}
     .spotify{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 20px;margin-top:27px;color:var(--bg);background:var(--ink);text-decoration:none;text-transform:uppercase;font:700 12px var(--sans);letter-spacing:.12em;transition:.25s}.spotify:hover,.spotify:focus-visible{background:var(--accent);transform:translateY(-2px);box-shadow:0 14px 45px var(--glow)}
-    .houses{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:22px}.house-btn{min-width:0;border:1px solid var(--line);color:var(--muted);background:rgba(0,0,0,.22);padding:13px 3px;font:400 clamp(7px,2.2vw,9px) var(--mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:.25s}.house-btn:hover,.house-btn.active{color:var(--ink);border-color:var(--accent);box-shadow:inset 0 -3px var(--accent),0 0 26px var(--glow)}
+    .albums{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:22px}.album-btn{min-width:0;border:1px solid var(--line);color:var(--muted);background:rgba(0,0,0,.18);padding:13px 3px;font:400 clamp(6px,1.95vw,8px) var(--mono);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:.25s}.album-btn:hover,.album-btn.active{color:var(--ink);border-color:var(--accent);box-shadow:inset 0 -3px var(--accent),0 0 26px var(--glow)}
+    .question{margin-top:24px;border:1px solid var(--line);padding:20px;font-family:var(--serif);font-style:italic;font-size:clamp(18px,5vw,28px);text-align:center;background:rgba(0,0,0,.13)}
     footer{display:flex;justify-content:space-between;gap:20px;padding-top:25px;color:var(--muted);font:400 8px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase}
-    body.love{--bg:#e7e7e3;--ink:#111;--muted:#555;--panel:rgba(255,255,255,.55);--line:rgba(0,0,0,.21);--accent:#8c8c8c;--glow:rgba(255,255,255,.75)}
-    body.void{--bg:#03070b;--ink:#f2f2ef;--muted:#8895a1;--accent:#79a6c8;--glow:rgba(69,141,189,.35)}
-    body.oblivion{--bg:#080808;--ink:#e7e7e7;--muted:#858585;--accent:#bdbdbd;--glow:rgba(255,255,255,.22)}
-    body.chrome{--bg:#090b0e;--ink:#fff;--muted:#9ca3ad;--accent:#d8e4ee;--glow:rgba(196,223,242,.42)}
-    body.signal{--bg:#09060f;--ink:#f8f5ff;--muted:#ad98c4;--accent:#b771ff;--glow:rgba(165,78,255,.45)}
-    body.oblivion .shell{animation:flicker 6s linear infinite}body.signal .title{text-shadow:-2px 0 #34d6ff,2px 0 #ff48c4}body.love .scanlines{display:none}
-    @keyframes ambient{to{transform:translate3d(5%,3%,0) scale(1.1)}}@keyframes noise{0%{transform:translate(0)}25%{transform:translate(-2%,2%)}50%{transform:translate(2%,-1%)}75%{transform:translate(1%,2%)}}
-    @keyframes pulse{50%{opacity:.35;transform:scale(.75)}}@keyframes reveal{from{opacity:0;transform:translateY(26px);filter:blur(12px)}to{opacity:1;transform:none}}
-    @keyframes halo{50%{transform:scale(1.09);opacity:.32}}@keyframes sweep{0%,55%{transform:translateX(-130%)}80%,100%{transform:translateX(130%)}}@keyframes flicker{0%,93%,96%,100%{opacity:1}94%{opacity:.96}95%{opacity:.88}}
+
+    body.love{--bg:#e7e7e3;--ink:#111;--muted:#555;--line:rgba(0,0,0,.21);--accent:#777;--accent2:#fff;--glow:rgba(255,255,255,.75)}
+    body.void{--bg:#03070b;--ink:#f2f2ef;--muted:#8895a1;--accent:#79a6c8;--accent2:#071a2b;--glow:rgba(69,141,189,.35)}
+    body.oblivion{--bg:#080808;--ink:#e7e7e7;--muted:#858585;--accent:#bdbdbd;--accent2:#3d3d3d;--glow:rgba(255,255,255,.22)}
+    body.chrome{--bg:#090b0e;--ink:#fff;--muted:#9ca3ad;--accent:#d8e4ee;--accent2:#485a69;--glow:rgba(196,223,242,.42)}
+    body.signal{--bg:#09060f;--ink:#f8f5ff;--muted:#ad98c4;--accent:#b771ff;--accent2:#27d7ff;--glow:rgba(165,78,255,.45)}
+
+    body.love .scanlines{display:none}body.love .cover{filter:grayscale(1) contrast(1.04)}
+    body.love .signature span:nth-child(1){width:210px;height:210px;border:1px solid #111;border-radius:50%;top:18%;right:-90px;animation:drift 12s ease-in-out infinite}
+    body.love .signature span:nth-child(2){content:"";width:150px;height:90px;background:radial-gradient(ellipse,#fff 0 44%,transparent 48%);top:48%;left:-34px;filter:blur(8px);animation:cloud 16s ease-in-out infinite}
+    body.void .signature span:nth-child(1){width:120%;height:145px;left:-10%;bottom:8%;background:repeating-radial-gradient(ellipse at center,transparent 0 11px,var(--accent) 12px 13px,transparent 14px 22px);opacity:.10;animation:ocean 9s linear infinite}
+    body.void .signature span:nth-child(2){width:2px;height:180px;right:15%;bottom:10%;background:var(--accent);box-shadow:-20px 38px 0 -1px var(--accent),20px 38px 0 -1px var(--accent);transform:rotate(8deg);opacity:.22}
+    body.oblivion .shell{animation:flicker 6s linear infinite}body.oblivion .signature span:nth-child(1){inset:17% 6% auto;height:2px;background:#fff;box-shadow:0 22px #fff,0 44px #fff;animation:glitchbar 4s steps(1) infinite}.oblivion .album-card{animation:microglitch 5s steps(1) infinite}
+    body.chrome .album-card{background:linear-gradient(130deg,#111 0%,#b9c4cc 20%,#171a1e 42%,#e7eef2 61%,#111 85%);background-size:250% 250%;animation:chromeFlow 7s ease-in-out infinite}.chrome .cover{filter:saturate(.72) contrast(1.12)}.chrome .signature span:nth-child(1){inset:8% -30%;height:1px;background:linear-gradient(90deg,transparent,#fff,transparent);transform:rotate(-22deg);animation:laser 5s ease-in-out infinite}
+    body.signal .title{text-shadow:-2px 0 #34d6ff,2px 0 #ff48c4}.signal .cover{filter:saturate(1.25) contrast(1.08)}.signal .signature span:nth-child(1){left:-10%;right:-10%;top:35%;height:120px;background:repeating-linear-gradient(90deg,transparent 0 9px,var(--accent) 10px 11px,transparent 12px 20px);clip-path:polygon(0 50%,4% 42%,8% 65%,12% 24%,16% 75%,20% 35%,24% 60%,28% 18%,32% 78%,36% 39%,40% 58%,44% 27%,48% 72%,52% 31%,56% 56%,60% 20%,64% 76%,68% 34%,72% 60%,76% 25%,80% 70%,84% 38%,88% 59%,92% 28%,96% 66%,100% 50%,100% 51%,0 51%);animation:signalMove 5s linear infinite}
+
+    @keyframes ambient{to{transform:translate3d(5%,3%,0) scale(1.1)}}
+    @keyframes noise{0%{transform:translate(0)}25%{transform:translate(-2%,2%)}50%{transform:translate(2%,-1%)}75%{transform:translate(1%,2%)}}
+    @keyframes pulse{50%{opacity:.35;transform:scale(.75)}}
+    @keyframes reveal{from{opacity:0;transform:translateY(26px);filter:blur(12px)}to{opacity:1;transform:none}}
+    @keyframes halo{50%{transform:scale(1.09);opacity:.32}}
+    @keyframes sweep{0%,55%{transform:translateX(-130%)}80%,100%{transform:translateX(130%)}}
+    @keyframes flicker{0%,93%,96%,100%{opacity:1}94%{opacity:.96}95%{opacity:.88}}
+    @keyframes drift{50%{transform:translate(-20px,25px) scale(1.12)}}
+    @keyframes cloud{50%{transform:translateX(80vw);opacity:.08}}
+    @keyframes ocean{to{transform:translateX(42px)}}
+    @keyframes glitchbar{0%,89%,100%{transform:none;opacity:.06}90%{transform:translateX(25%);opacity:.28}92%{transform:translateX(-18%);opacity:.16}}
+    @keyframes microglitch{0%,92%,100%{transform:rotateX(1deg) rotateY(-2deg)}93%{transform:translateX(3px) skewX(1deg)}94%{transform:translateX(-3px) skewX(-1deg)}}
+    @keyframes chromeFlow{50%{background-position:100% 100%}}
+    @keyframes laser{50%{transform:translateY(65vh) rotate(-22deg);opacity:.05}}
+    @keyframes signalMove{to{transform:translateX(80px)}}
     @media(min-width:700px){.shell{padding-left:38px;padding-right:38px}.hero{min-height:68vh}.card-stage{width:430px}.tracks li{font-size:16px}}
+    @media(max-width:430px){header{font-size:8px}.status span{display:none}.album-facts{grid-template-columns:1fr}.title{font-size:clamp(44px,14vw,66px)}.albums{gap:4px}.album-btn{padding:12px 1px}}
     @media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
   </style>
 </head>
 <body class="void">
-  <div class="cover-bg" aria-hidden="true"></div><div class="grain"></div><div class="scanlines"></div>
+  <div class="cover-bg" aria-hidden="true"></div>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="signature" aria-hidden="true"><span></span><span></span></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
   <main class="shell">
-    <header><span>THE NBHD // TOUR EDITION</span><span class="status"><i class="led"></i><span>NFC SIGNAL ACTIVE</span></span></header>
+    <header>
+      <span>THE NBHD // EDICIÓN DE CONCIERTO 2026</span>
+      <span class="status"><i class="led"></i><span>SEÑAL NFC ACTIVA</span></span>
+    </header>
+
     <section class="hero">
       <div class="eyebrow" id="era">ERA 02 // 2015</div>
-      <h1 class="title"><span id="house">VOID</span><br>HOUSE</h1>
-      <div class="meta-line"><span id="rarity" class="rarity">LEGENDARY</span><span id="edition">05 / 20</span></div>
+      <h1 class="title"><span class="display-word" id="displayTitle">WIPED OUT!</span><span class="subword" id="archiveLabel">ARCHIVO DE ÁLBUM // 02</span></h1>
+      <div class="meta-line"><span id="rarity" class="rarity">LEGENDARY</span><span id="edition">05 OF 20</span></div>
       <p class="editorial" id="description"></p>
+      <div class="motif" id="motif">CALIFORNIA AFTER DARK</div>
     </section>
-    <section class="card-stage" aria-label="Album collectible">
+
+    <section class="card-stage" aria-label="Coleccionable del álbum">
       <article class="album-card" id="tiltCard">
         <div class="cover" role="img" aria-label="Portada del álbum"></div>
-        <div class="card-label"><div><strong id="album"></strong><br><small id="artist">THE NEIGHBOURHOOD</small></div><span class="card-no" id="cardNo">NBHD-02</span></div>
+        <div class="card-label"><div><strong id="album"></strong><small>THE NEIGHBOURHOOD</small></div><span class="card-no" id="cardNo">NBHD-02</span></div>
       </article>
     </section>
-    <section class="section"><span class="section-tag">// LIVE ROTATION</span><h2>Setlist<br>highlights</h2><ol class="tracks" id="tracks"></ol><a class="spotify" id="spotify" target="_blank" rel="noopener noreferrer"><span>Open album on Spotify</span><span>↗</span></a></section>
-    <section class="section"><span class="section-tag">// ARCHIVE INDEX</span><h2>Collect the<br>five houses</h2><div class="houses" id="houses"></div></section>
-    <footer><span>Unofficial fan-made collectible<br>Not affiliated with the artist or Spotify</span><span id="footerCode">NBHD/NFC/02</span></footer>
+
+    <section class="section">
+      <span class="section-tag">// PERFIL DE LA ERA</span>
+      <h2>El álbum que<br>recibiste</h2>
+      <div class="album-facts">
+        <div class="fact"><b>Lanzamiento</b><span id="factYear"></span></div>
+        <div class="fact"><b>Rareza</b><span id="factRareza"></span></div>
+        <div class="fact"><b>Identidad visual</b><span id="factVisual"></span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <span class="section-tag">// ROTACIÓN EN VIVO</span>
+      <h2>Canciones del<br>setlist</h2>
+      <ol class="tracks" id="tracks"></ol>
+      <a class="spotify" id="spotify" target="_blank" rel="noopener noreferrer"><span>Abrir álbum en Spotify</span><span>ABRIR &gt;</span></a>
+    </section>
+
+    <section class="section">
+      <span class="section-tag">// ARCHIVO DE LA GIRA</span>
+      <h2>Colecciona los<br>cinco álbumes</h2>
+      <div class="albums" id="albums"></div>
+      <div class="question">¿Qué álbum recibiste esta noche?</div>
+    </section>
+
+    <footer><span>Coleccionable fan-made no oficial<br>Sin afiliación con The Neighbourhood ni Spotify</span><span id="footerCode">NBHD/NFC/02</span></footer>
   </main>
+
   <script>
-    const data = {
-      love:{house:'LOVE',album:'I LOVE YOU.',year:'2013',rarity:'LEGENDARY',edition:'05 / 20',code:'01',cover:'https://i.scdn.co/image/ab67616d0000b2738265a736a1eb838ad5a0b921',spotify:'https://open.spotify.com/album/4xkM0BwLM9H2IUcbYzpcBI',description:'Monochrome devotion, suburban clouds and the record that made longing feel cinematic.',tracks:['A Little Death','Afraid','Sweater Weather']},
-      void:{house:'VOID',album:'WIPED OUT!',year:'2015',rarity:'LEGENDARY',edition:'05 / 20',code:'02',cover:'https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d',spotify:'https://open.spotify.com/album/18iFxjZugvKhuNNMbLjZJF',description:'California after dark. Salt air, black palms, heartbreak and the slow pull of the ocean.',tracks:['Prey','Cry Baby','R.I.P. 2 My Youth','Baby Came Home 2 / Valentines','The Beach','Daddy Issues']},
-      oblivion:{house:'OBLIVION',album:'HARD TO IMAGINE THE NEIGHBOURHOOD EVER CHANGING',year:'2018',rarity:'EPIC',edition:'04 / 20',code:'03',cover:'https://m.media-amazon.com/images/I/81F27c5DIXL.jpg',spotify:'https://open.spotify.com/album/0ODLCdHBFVvKwJGeSfd1jy',description:'Reflections on glass, television static and a familiar voice dissolving into something new.',tracks:['Reflections','Void','You Get Me So High','Nervous','Softcore']},
-      chrome:{house:'CHROME',album:'CHIP CHROME & THE MONO-TONES',year:'2020',rarity:'RARE',edition:'03 / 20',code:'04',cover:'https://i.scdn.co/image/ab67616d00001e025aa30ba7fff59083baccc773',spotify:'https://open.spotify.com/album/4uNgt1uQs6wZRm4giB3shX',description:'A silver alter ego transmitted from a retrofuture where vulnerability wears chrome.',tracks:["Devil's Advocate",'Pretty Boy','Cherry Flavoured']},
-      signal:{house:'SIGNAL',album:'(((((ULTRASOUND)))))',year:'2025',rarity:'COMMON',edition:'03 / 20',code:'05',cover:'https://i.scdn.co/image/ab67616d0000b2739ea16fcc48f914ea0225b5bf',spotify:'https://open.spotify.com/album/5Wa03W4vfkVvMETp0QOKcZ',description:'The current transmission. New frequencies, distorted color and the pulse of the live era.',tracks:['Hula Girl','Zombie','Lovebomb','Planet','Private']}
+    const data={
+      love:{display:'I LOVE YOU.',short:'I LOVE YOU.',album:'I LOVE YOU.',year:'2013',rarity:'LEGENDARY',edition:'05 OF 20',code:'01',cover:'https://i.scdn.co/image/ab67616d0000b2738265a736a1eb838ad5a0b921',spotify:'https://open.spotify.com/album/4xkM0BwLM9H2IUcbYzpcBI',description:'Devoción en blanco y negro, nubes suburbanas y el álbum que convirtió la nostalgia en algo cinematográfico.',motif:'DEVOCIÓN MONOCROMÁTICA',visual:'Nubes / película / fotocopia',tracks:['A Little Death','Afraid','Sweater Weather']},
+      void:{display:'WIPED OUT!',short:'WIPED OUT!',album:'WIPED OUT!',year:'2015',rarity:'LEGENDARY',edition:'05 OF 20',code:'02',cover:'https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d',spotify:'https://open.spotify.com/album/18iFxjZugvKhuNNMbLjZJF',description:'California después del anochecer. Aire salado, palmeras oscuras, corazones rotos y la lenta atracción del océano.',motif:'CALIFORNIA DESPUÉS DEL ANOCHECER',visual:'Océano / palmeras / noche',tracks:['Prey','Cry Baby','R.I.P. 2 My Youth','Baby Came Home 2 / Valentines','The Beach','Daddy Issues']},
+      oblivion:{display:'HARD TO IMAGINE',short:'HARD TO IMAGINE',album:'HARD TO IMAGINE THE NEIGHBOURHOOD EVER CHANGING',year:'2018',rarity:'EPIC',edition:'04 OF 20',code:'03',cover:'https://m.media-amazon.com/images/I/81F27c5DIXL.jpg',spotify:'https://open.spotify.com/album/0ODLCdHBFVvKwJGeSfd1jy',description:'Reflejos sobre cristal, estática de televisión y una voz familiar transformándose en algo nuevo.',motif:'SIEMPRE CAMBIANDO / NUNCA AUSENTE',visual:'CRT / cristal / estática',tracks:['Reflections','Void','You Get Me So High','Nervous','Softcore']},
+      chrome:{display:'CHIP CHROME',short:'CHIP CHROME',album:'CHIP CHROME & THE MONO-TONES',year:'2020',rarity:'RARE',edition:'03 OF 20',code:'04',cover:'https://i.scdn.co/image/ab67616d00001e025aa30ba7fff59083baccc773',spotify:'https://open.spotify.com/album/4uNgt1uQs6wZRm4giB3shX',description:'Un alter ego plateado transmitido desde un retrofuturo donde la vulnerabilidad viste cromo.',motif:'TRANSMISIÓN DESDE EL RETROFUTURO',visual:'Cromo / plata / espacio',tracks:["Devil's Advocate",'Pretty Boy','Cherry Flavoured']},
+      signal:{display:'ULTRASOUND',short:'ULTRASOUND',album:'(((((ULTRASOUND)))))',year:'2025',rarity:'COMMON',edition:'03 OF 20',code:'05',cover:'https://i.scdn.co/image/ab67616d0000b2739ea16fcc48f914ea0225b5bf',spotify:'https://open.spotify.com/album/5Wa03W4vfkVvMETp0QOKcZ',description:'La transmisión actual. Nuevas frecuencias, color distorsionado y el pulso de la era en vivo.',motif:'TRANSMISIÓN ACTUAL / SEÑAL EN VIVO',visual:'Frecuencia / neón / pulso',tracks:['Hula Girl','Zombie','Lovebomb','Planet','Private']}
     };
+
     const order=['love','void','oblivion','chrome','signal'];
+    const $=id=>document.getElementById(id);
+
     function render(key){
-      if(!data[key]) key='void'; const d=data[key];
-      document.body.className=key; document.documentElement.style.setProperty('--cover',`url("${d.cover}")`);
-      document.title=`${d.house} HOUSE // THE NBHD`;
-      house.textContent=d.house; album.textContent=d.album; rarity.textContent=d.rarity; edition.textContent=d.edition;
-      era.textContent=`ERA ${d.code} // ${d.year}`; description.textContent=d.description; cardNo.textContent=`NBHD-${d.code}`;
-      spotify.href=d.spotify; footerCode.textContent=`NBHD/NFC/${d.code}`;
-      tracks.innerHTML=d.tracks.map((t,i)=>`<li><span class="n">${String(i+1).padStart(2,'0')}</span><span>${t}</span><span class="mark">LIVE</span></li>`).join('');
-      houses.innerHTML=order.map(k=>`<button class="house-btn ${k===key?'active':''}" data-house="${k}">${data[k].house}</button>`).join('');
-      houses.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=b.dataset.house;history.replaceState(null,'',`?house=${k}`);render(k);scrollTo({top:0,behavior:'smooth'})});
+      if(!data[key])key='void';
+      const d=data[key];
+      document.body.className=key;
+      document.documentElement.style.setProperty('--cover',`url("${d.cover}")`);
+      document.title=`${d.display} // THE NBHD EDICIÓN DE CONCIERTO`;
+      $('displayTitle').textContent=d.display;
+      $('archiveLabel').textContent=`ARCHIVO DE ÁLBUM // ${d.code}`;
+      $('album').textContent=d.album;
+      $('rarity').textContent=d.rarity;
+      $('edition').textContent=d.edition;
+      $('era').textContent=`ERA ${d.code} // ${d.year}`;
+      $('description').textContent=d.description;
+      $('motif').textContent=d.motif;
+      $('cardNo').textContent=`NBHD-${d.code}`;
+      $('spotify').href=d.spotify;
+      $('footerCode').textContent=`NBHD/NFC/${d.code}`;
+      $('factYear').textContent=d.year;
+      $('factRareza').textContent=d.rarity;
+      $('factVisual').textContent=d.visual;
+      $('tracks').innerHTML=d.tracks.map((t,i)=>`<li><span class="n">${String(i+1).padStart(2,'0')}</span><span>${t}</span><span class="mark">EN VIVO</span></li>`).join('');
+      $('albums').innerHTML=order.map(k=>`<button class="album-btn ${k===key?'active':''}" data-album="${k}">${data[k].short}</button>`).join('');
+      $('albums').querySelectorAll('button').forEach(button=>button.onclick=()=>{
+        const next=button.dataset.album;
+        history.replaceState(null,'',`?house=${next}`);
+        render(next);
+        scrollTo({top:0,behavior:'smooth'});
+      });
     }
-    const selected=new URLSearchParams(location.search).get('house')||'void'; render(selected.toLowerCase());
-    const card=document.getElementById('tiltCard');
-    card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform=`rotateX(${-y*8}deg) rotateY(${x*10}deg)`});
+
+    render((new URLSearchParams(location.search).get('house')||'void').toLowerCase());
+
+    const card=$('tiltCard');
+    card.addEventListener('pointermove',event=>{
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      const rect=card.getBoundingClientRect();
+      const x=(event.clientX-rect.left)/rect.width-.5;
+      const y=(event.clientY-rect.top)/rect.height-.5;
+      card.style.transform=`rotateX(${-y*8}deg) rotateY(${x*10}deg)`;
+    });
     card.addEventListener('pointerleave',()=>card.style.transform='rotateX(1deg) rotateY(-2deg)');
   </script>
 </body>
